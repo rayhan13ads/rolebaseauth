@@ -1,0 +1,4 @@
+npm i -D typescript ts-node nodemon @types/nodemon @types/express
+
+npm i @types/body-parser bcryptjs cors jsonwebtoken mongoose mongoose-unique-validator passport passport-jwt --save
+npm i @types/body-parser @types/bcryptjs @types/cors @types/jsonwebtoken @types/mongoose @types/mongoose-unique-validator @types/passport @types/passport-jwt --save
