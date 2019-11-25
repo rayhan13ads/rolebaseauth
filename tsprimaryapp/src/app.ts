@@ -7,8 +7,26 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import passport from "passport";
 
+
+const config = require('./config/database');
+
 //intialize app
 const app:Application = express();
+
+
+
+//database connect
+mongoose.set('useCreateIndex', true);
+mongoose.connect(config.database, {
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+}).then(()=>{
+    console.log(`Connection is successfully ${config.database}`);
+    
+}).catch((err)=>{
+    console.log(`Connection failed for : ${err}`);
+    
+});
 
 //define port
 const port = process.env.PORT || 5000

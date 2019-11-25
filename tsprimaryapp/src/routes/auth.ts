@@ -4,6 +4,6 @@ const router = express.Router();
 
 router.get('/api',authController.getApiController);
 
-
+router.post('/api/user',authController.register);
 
 export default router;
