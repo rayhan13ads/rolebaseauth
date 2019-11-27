@@ -6,7 +6,7 @@ import bcrypt, {hash} from "bcryptjs";
 
 
 
-const UserSchema:Schema = new Schema({
+const AdminSchema:Schema = new Schema({
     name:{
         type:String,
         required: true
@@ -29,35 +29,39 @@ const UserSchema:Schema = new Schema({
     contact:{
         type:String,
         required:true
+    },
+    job_profile:{
+        type: String,
+        required: true
     }
 }) ;
 
 
-UserSchema.plugin(uniqueValidator);
+AdminSchema.plugin(uniqueValidator);
 
-const User = module.exports = mongoose.model('User',UserSchema);
+const Admin = module.exports = mongoose.model('Admin',AdminSchema);
 
 
 //find user id
-module.exports.getUserById = (id:any, callback:Function) =>{
+module.exports.getById = (id:any, callback:Function) =>{
     const query ={
         _id:id
     }
-    User.findOne(query,callback);
+    Admin.findOne(query,callback);
 }
 
 
 // find by username
-module.exports.getUserByUsername = (username:String, callback:Function)=>{
+module.exports.getByUsername = (username:String, callback:Function)=>{
     const query = {
         username:username
     }
-    User.findOne(query,callback);
+    Admin.findOne(query,callback);
 }
 
 
 //add user
-module.exports.addUser = async (newUser: any, callback:Function ) => { 
+module.exports.addAdmin = async (newUser: any, callback:Function ) => { 
      
     let password = newUser.password;
     

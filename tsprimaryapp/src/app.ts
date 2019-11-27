@@ -44,6 +44,10 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Bring in the passport authenticate starategy
+
+require('./config/passport')(passport);
+
 
 // define view engine
 app.set('views', path.join(__dirname, 'views'));
