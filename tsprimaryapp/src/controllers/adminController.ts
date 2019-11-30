@@ -6,7 +6,7 @@ import { authProps } from '../helpers/auth_helper';
 import { Model } from 'mongoose';
 import { log } from "util";
 
-const User = require('../models/auth');
+const Admin = require('../models/admin');
 const config = require('../config/database');
 @injectable()
 export class AdminController {
@@ -16,15 +16,16 @@ export class AdminController {
 
     public register(req:Request,res:Response){
 
-        let newUser = new User({
+        let newAdmin = new Admin({
            name: req.body.name,
            email: req.body.email,
            username: req.body.username,
            password: req.body.password,
            contact: req.body.contact,
+           job_profile:req.body.job_profile
         });
 
-        User.addUser(newUser,(err:any, user:any)=>{
+        Admin.addAdmin(newAdmin,(err:any, user:any)=>{
                 if (err) {
                     let message  = ""
                     if (err.errors.username) message = "Username is already taken .";
@@ -38,7 +39,7 @@ export class AdminController {
                 }else{
                    return res.json({
                         success: true,
-                        message: "User registration successfuly."
+                        message: "Admin registration successfuly."
                     });
                 }
         });
@@ -53,28 +54,30 @@ export class AdminController {
         console.log(req.body.username);
         
 
-        User.getUserByUsername(username, (err:any,user:any)=>{
+        Admin.getByUsername(username, (err:any,admin:any)=>{
             if(err) throw err;
-            console.log(user);
+            console.log(admin);
             
-            if (!user) {
+            if (!admin) {
                 return res.json({
                     success: false,
-                    message: 'User not found .'
+                    message: 'Admin not found .'
                 });
             }
-            User.comparePassword(password, user.password,(err:any, isMatch:any) =>{
+            Admin.comparePassword(password, admin.password,(err:any, isMatch:any) =>{
                 if(err) throw err
                 
+                const {id, username, name, email,contact, job_profile} = admin;
                 if (isMatch) {
                     const token = jwt.sign({
-                        type:'user',
+                        type:'admin',
                         data :{
-                            _id: user.id,
-                            username:user.username,
-                            name: user.name,
-                            email: user.email,
-                            contact: user.contact
+                            _id: id,
+                            username:username,
+                            name: name,
+                            email: email,
+                            contact: contact,
+                            job_profile: job_profile
                         }
                     }, config.secret,{
                         expiresIn: 604800,
